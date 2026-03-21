@@ -1,0 +1,9 @@
+filebeat.inputs:
+- type: filestream
+  id: app-local-logs
+  enabled: true
+  paths:
+    - /mnt/logs/*.log  # Reads from the mounted Docker volume which maps to local ./logs directory
+
+output.logstash:
+  hosts: ["logstash:5044"]

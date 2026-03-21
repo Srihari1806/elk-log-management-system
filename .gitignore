@@ -1,0 +1,13 @@
+# Ignore all logs but keep our sample log
+logs/*.log
+!logs/sample.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.suo
+*.user
