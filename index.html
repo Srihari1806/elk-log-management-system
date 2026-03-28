@@ -362,21 +362,35 @@
     </div>
 
     <script>
-        // Sample data derived from sample.log
-        const rawLogs = [
-            { time: "2026-03-21 10:15:30", level: "INFO", msg: "System boot sequence initiated." },
-            { time: "2026-03-21 10:15:32", level: "DEBUG", msg: "Loading configuration files." },
-            { time: "2026-03-21 10:15:35", level: "INFO", msg: "Configuration loaded successfully." },
-            { time: "2026-03-21 10:16:05", level: "WARNING", msg: "Disk space on drive C: is below 20%." },
-            { time: "2026-03-21 10:17:10", level: "ERROR", msg: "Unable to bind to port 8080: Port already in use." },
-            { time: "2026-03-21 10:17:12", level: "INFO", msg: "Attempting to bind to fallback port 8081." },
-            { time: "2026-03-21 10:17:15", level: "INFO", msg: "Successfully bound to port 8081. Server is running." },
-            { time: "2026-03-21 10:19:00", level: "TRACE", msg: "Handshake sequence received from 127.0.0.1." },
-            { time: "2026-03-21 10:20:00", level: "ERROR", msg: "Database connection lost due to timeout." }
-        ];
+        // Modified to fetch from logs/sample.log dynamically
+        async function fetchLogs() {
+            try {
+                const response = await fetch('./logs/sample.log');
+                if (!response.ok) throw new Error('Could not fetch log file');
+                const text = await response.text();
+                
+                // Parse log lines (Format: Timestamp [LEVEL] Message)
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                return lines.map(line => {
+                    const match = line.match(/^(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s+\[(\w+)\]\s+(.*)$/);
+                    if (match) {
+                        return { time: match[1], level: match[2], msg: match[3] };
+                    }
+                    return null;
+                }).filter(Boolean);
+            } catch (err) {
+                console.error('Error fetching logs:', err);
+                return [
+                    { time: "Error", level: "ERROR", msg: "Failed to load log file. Is server running?" }
+                ];
+            }
+        }
 
-        function initDashboard() {
+        async function initDashboard() {
+            const rawLogs = await fetchLogs();
             const tableBody = document.getElementById('log-body');
+            tableBody.innerHTML = '';
+            
             let errorCount = 0;
             const levels = {};
 
@@ -409,10 +423,10 @@
                         data: Object.values(levels),
                         backgroundColor: [
                             'rgba(59, 130, 246, 0.8)', // INFO
-                            'rgba(148, 163, 184, 0.8)', // DEBUG/TRACE
                             'rgba(245, 158, 11, 0.8)', // WARNING
                             'rgba(239, 68, 68, 0.8)',  // ERROR
-                            'rgba(148, 163, 184, 0.8)'
+                            'rgba(148, 163, 184, 0.8)', // DEBUG/TRACE
+                            'rgba(129, 140, 248, 0.8)'
                         ],
                         borderColor: 'transparent',
                         hoverOffset: 10

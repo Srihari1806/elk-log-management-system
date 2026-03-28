@@ -7,3 +7,14 @@
 2026-03-21 10:17:15 [INFO] Successfully bound to port 8081. Server is running.
 2026-03-21 10:19:00 [TRACE] Handshake sequence received from 127.0.0.1.
 2026-03-21 10:20:00 [ERROR] Database connection lost due to timeout.
+2026-03-21 10:21:15 [INFO] User login successful for 'admin'.
+2026-03-21 10:22:45 [WARNING] Slow database query in 'user_profile' module (1.5s).
+2026-03-21 10:25:30 [ERROR] File 'config_backup.json' not found during scheduled task.
+2026-03-21 10:28:10 [INFO] Log rotation completed successfully.
+2026-03-21 10:30:00 [DEBUG] Memory usage at 65%.
+2026-03-21 10:35:50 [ERROR] Connection refused to external API 'auth-service.io'.
+2026-03-21 10:40:20 [WARNING] CPU temperature high: 75C.
+2026-03-21 10:45:00 [INFO] Background job 'report_gen' finished.
+2026-03-21 10:50:30 [ERROR] NullPointerException at com.app.Service.process(Service.java:142).
+2026-03-21 11:00:15 [INFO] New user registered: guest_123.
+2026-03-21 11:05:40 [WARNING] API rate limit reached for client IP 192.168.1.1.
